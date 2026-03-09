@@ -148,7 +148,7 @@
       color: var(--rose);
       border: 2px solid var(--blush);
       box-shadow: 0 2px 12px rgba(232,68,90,0.10);
-      position: fixed;      /* detached from flow so it can move freely */
+      /* position: fixed;      /* detached from flow so it can move freely */
       z-index: 200;
       transition: left 0.08s, top 0.08s, right 0.08s, bottom 0.08s;
       white-space: nowrap;
@@ -276,6 +276,7 @@
   <p class="card-sub" style="display:none;">Choose wisely… the heart knows its answer 🌹</p>
 
   <div class="btn-row" id="btnRow">
+    <button class="btn btn-no" id="btnNo">Its Ok !! 🙈</button>
     <button class="btn btn-yes" id="btnYes">It was my mistake ! 💕</button>
   </div>
 
@@ -285,7 +286,7 @@
 </div>
 
 <!-- Shy "No" button – rendered outside card, positioned freely -->
-<button class="btn btn-no" id="btnNo">Its Ok !! 🙈</button>
+
 
 <!-- Popup overlay -->
 <div class="overlay" id="overlay">
@@ -374,6 +375,7 @@
   // Clicking somehow (failsafe) — just flee again
   btnNo.addEventListener('click', e => {
     e.preventDefault();
+    btnNo.style.position = "fixed";
     flee(e.clientX + Math.random() * 40 - 20, e.clientY + Math.random() * 40 - 20);
   });
 
