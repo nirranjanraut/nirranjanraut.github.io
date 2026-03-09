@@ -148,7 +148,7 @@
       color: var(--rose);
       border: 2px solid var(--blush);
       box-shadow: 0 2px 12px rgba(232,68,90,0.10);
-      /* position: fixed;      /* detached from flow so it can move freely */
+      position: relative;      /* detached from flow so it can move freely */
       z-index: 200;
       transition: left 0.08s, top 0.08s, right 0.08s, bottom 0.08s;
       white-space: nowrap;
@@ -276,7 +276,7 @@
   <p class="card-sub" style="display:none;">Choose wisely… the heart knows its answer 🌹</p>
 
   <div class="btn-row" id="btnRow">
-    <button class="btn btn-no" id="btnNo">Its Ok !! 🙈</button>
+    <button class="btn btn-no" id="btnNo">Yes, I will 🙈</button>
     <button class="btn btn-yes" id="btnYes">It was my mistake ! 💕</button>
   </div>
 
@@ -327,7 +327,7 @@
     btnNo.style.left = (window.innerWidth  - r.width  - 60) + 'px';
     btnNo.style.top  = (window.innerHeight - r.height - 60) + 'px';
   }
-  placeNoButton();
+  //placeNoButton();
   window.addEventListener('resize', placeNoButton);
 
   function flee(cursorX, cursorY) {
@@ -375,7 +375,6 @@
   // Clicking somehow (failsafe) — just flee again
   btnNo.addEventListener('click', e => {
     e.preventDefault();
-    btnNo.style.position = "fixed";
     flee(e.clientX + Math.random() * 40 - 20, e.clientY + Math.random() * 40 - 20);
   });
 
@@ -394,6 +393,10 @@
 
   overlay.addEventListener('click', e => {
     if (e.target === overlay) overlay.classList.remove('show');
+  });
+  window.addEventListener('load', () => {
+    const btnNo = document.getElementById('btnNo');
+    btnNo.style.position = 'fixed';
   });
 </script>
 </body>
