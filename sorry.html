@@ -1,0 +1,398 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Valentine's Question 💕</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Lato:wght@300;400;700&display=swap" rel="stylesheet"/>
+  <style>
+    :root {
+      --rose:        #e8445a;
+      --deep-rose:   #c0294a;
+      --blush:       #f7c5cf;
+      --petal:       #fde8ec;
+      --ivory:       #fff8f9;
+      --mauve:       #9c4a5c;
+      --dark:        #3b1a22;
+      --gold:        #e8a87c;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      min-height: 100vh;
+      background: linear-gradient(135deg, #fce4ec 0%, #f8bbd0 35%, #f48fb1 70%, #e91e63 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'Lato', sans-serif;
+      overflow: hidden;
+      position: relative;
+    }
+
+    /* ── Floating hearts background ── */
+    .heart-bg { position: fixed; inset: 0; pointer-events: none; z-index: 0; overflow: hidden; }
+    .heart-bg span {
+      position: absolute;
+      font-size: clamp(12px, 2vw, 24px);
+      opacity: 0;
+      animation: floatUp linear infinite;
+      bottom: -60px;
+    }
+    @keyframes floatUp {
+      0%   { transform: translateY(0) rotate(0deg) scale(0.8);  opacity: 0; }
+      10%  { opacity: 0.6; }
+      90%  { opacity: 0.3; }
+      100% { transform: translateY(-110vh) rotate(360deg) scale(1.2); opacity: 0; }
+    }
+
+    /* ── Card ── */
+    .card {
+      position: relative;
+      z-index: 10;
+      background: var(--ivory);
+      border-radius: 28px;
+      padding: 52px 48px 44px;
+      width: min(520px, 92vw);
+      box-shadow:
+        0 8px 32px rgba(196, 30, 60, 0.18),
+        0 2px 8px  rgba(196, 30, 60, 0.10),
+        inset 0 1px 0 rgba(255,255,255,0.9);
+      text-align: center;
+      animation: cardIn 0.8s cubic-bezier(0.34,1.56,0.64,1) both;
+      border: 1.5px solid rgba(232, 68, 90, 0.15);
+    }
+    @keyframes cardIn {
+      from { opacity: 0; transform: translateY(60px) scale(0.88); }
+      to   { opacity: 1; transform: translateY(0)   scale(1);    }
+    }
+
+    /* decorative top ribbon */
+    .card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 50%;
+      transform: translateX(-50%);
+      width: 80px; height: 4px;
+      background: linear-gradient(90deg, var(--rose), var(--gold), var(--rose));
+      border-radius: 0 0 4px 4px;
+    }
+
+    .card-icon {
+      font-size: 52px;
+      margin-bottom: 18px;
+      display: block;
+      animation: pulse 1.6s ease-in-out infinite;
+    }
+    @keyframes pulse {
+      0%,100% { transform: scale(1);    }
+      50%      { transform: scale(1.12); }
+    }
+
+    .card-eyebrow {
+      font-family: 'Lato', sans-serif;
+      font-weight: 300;
+      font-size: 11px;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: var(--mauve);
+      margin-bottom: 10px;
+    }
+
+    .card-title {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(22px, 4vw, 30px);
+      font-weight: 700;
+      color: var(--dark);
+      line-height: 1.3;
+      margin-bottom: 10px;
+    }
+    .card-title em {
+      font-style: italic;
+      color: var(--rose);
+    }
+
+    .card-sub {
+      font-size: 13px;
+      color: #a07080;
+      margin-bottom: 36px;
+      font-weight: 300;
+    }
+
+    /* ── Button row ── */
+    .btn-row {
+      display: flex;
+      gap: 16px;
+      justify-content: center;
+      flex-wrap: wrap;
+      min-height: 56px;
+      position: relative;
+    }
+
+    /* shared button base */
+    .btn {
+      padding: 14px 36px;
+      border: none;
+      border-radius: 50px;
+      font-family: 'Lato', sans-serif;
+      font-size: 15px;
+      font-weight: 700;
+      cursor: pointer;
+      letter-spacing: 0.5px;
+      transition: transform 0.18s, box-shadow 0.18s;
+    }
+
+    /* YES – the shy one */
+    .btn-no {
+      background: linear-gradient(135deg, #fff0f3, #fce4ec);
+      color: var(--rose);
+      border: 2px solid var(--blush);
+      box-shadow: 0 2px 12px rgba(232,68,90,0.10);
+      position: fixed;      /* detached from flow so it can move freely */
+      z-index: 200;
+      transition: left 0.08s, top 0.08s, right 0.08s, bottom 0.08s;
+      white-space: nowrap;
+    }
+    .btn-no:hover { cursor: not-allowed; }
+
+    /* YES – the confident one */
+    .btn-yes {
+      background: linear-gradient(135deg, var(--rose), var(--deep-rose));
+      color: #fff;
+      box-shadow: 0 6px 20px rgba(232,68,90,0.40);
+    }
+    .btn-yes:hover {
+      transform: translateY(-3px) scale(1.04);
+      box-shadow: 0 10px 28px rgba(232,68,90,0.50);
+    }
+    .btn-yes:active { transform: translateY(0) scale(0.97); }
+
+    /* divider */
+    .divider {
+      display: flex; align-items: center; gap: 12px;
+      margin: 28px 0 0;
+      color: #d4a0ac;
+      font-size: 11px;
+      letter-spacing: 1px;
+    }
+    .divider::before, .divider::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, #f0c0cc, transparent);
+    }
+
+    /* ── Popup overlay ── */
+    .overlay {
+      position: fixed; inset: 0; z-index: 500;
+      background: rgba(60, 10, 25, 0.55);
+      backdrop-filter: blur(6px);
+      display: flex; align-items: center; justify-content: center;
+      opacity: 0; pointer-events: none;
+      transition: opacity 0.35s;
+    }
+    .overlay.show { opacity: 1; pointer-events: all; }
+
+    .popup {
+      background: var(--ivory);
+      border-radius: 24px;
+      padding: 44px 40px 36px;
+      width: min(400px, 88vw);
+      text-align: center;
+      box-shadow: 0 24px 60px rgba(196,30,60,0.28);
+      transform: scale(0.82) translateY(30px);
+      transition: transform 0.4s cubic-bezier(0.34,1.56,0.64,1);
+      border: 1.5px solid rgba(232,68,90,0.12);
+      position: relative;
+    }
+    .overlay.show .popup { transform: scale(1) translateY(0); }
+
+    .popup-icon  { font-size: 48px; margin-bottom: 16px; display: block; animation: spin 0.6s 0.3s both; }
+    @keyframes spin {
+      from { transform: rotate(-20deg) scale(0.6); }
+      to   { transform: rotate(0deg)   scale(1);   }
+    }
+
+    .popup-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 24px; font-weight: 700;
+      color: var(--dark); margin-bottom: 12px;
+    }
+
+    .popup-body {
+      font-size: 14px; line-height: 1.7;
+      color: #8a5060; margin-bottom: 28px;
+      font-weight: 300;
+    }
+    .popup-body strong { color: var(--rose); font-weight: 700; }
+
+    .btn-agree {
+      background: linear-gradient(135deg, var(--rose), var(--deep-rose));
+      color: #fff;
+      padding: 13px 48px;
+      border-radius: 50px;
+      font-family: 'Lato', sans-serif;
+      font-size: 15px; font-weight: 700;
+      border: none; cursor: pointer;
+      box-shadow: 0 6px 20px rgba(232,68,90,0.38);
+      transition: transform 0.18s, box-shadow 0.18s;
+      letter-spacing: 0.5px;
+    }
+    .btn-agree:hover {
+      transform: translateY(-3px) scale(1.05);
+      box-shadow: 0 12px 30px rgba(232,68,90,0.48);
+    }
+    .btn-agree:active { transform: scale(0.96); }
+
+    .popup-confetti {
+      position: absolute; top: -10px; left: 50%;
+      transform: translateX(-50%);
+      font-size: 22px; pointer-events: none;
+      animation: confettiFall 1.4s 0.4s both;
+    }
+    @keyframes confettiFall {
+      from { opacity: 0; top: -40px; }
+      60%  { opacity: 1; }
+      to   { opacity: 0; top: 10px;  }
+    }
+
+    /* mobile touch hint */
+    .hint {
+      font-size: 11px; color: #c09aaa;
+      margin-top: 24px; letter-spacing: 0.5px;
+    }
+  </style>
+</head>
+<body>
+
+<!-- Floating hearts background -->
+<div class="heart-bg" id="heartBg"></div>
+
+<!-- Main card -->
+<div class="card">
+  <span class="card-icon">❤️‍🩹</span>
+  <p class="card-eyebrow">I'm really very sorry</p>
+  <h1 class="card-title">Would you <em>forgive me?</em></h1>
+  <p class="card-sub" style="display:none;">Choose wisely… the heart knows its answer 🌹</p>
+
+  <div class="btn-row" id="btnRow">
+    <button class="btn btn-yes" id="btnYes">It was my mistake ! 💕</button>
+  </div>
+
+  <div class="divider">or</div>
+
+  <p class="hint" id="noHint">Choose what you feel 😏</p>
+</div>
+
+<!-- Shy "No" button – rendered outside card, positioned freely -->
+<button class="btn btn-no" id="btnNo">Its Ok !! 🙈</button>
+
+<!-- Popup overlay -->
+<div class="overlay" id="overlay">
+  <div class="popup">
+    <span class="popup-confetti">🎉✨🎊</span>
+    <span class="popup-icon">🥰</span>
+    <h2 class="popup-title">Yes! I knew it!</h2>
+    <p class="popup-body">
+      You look so beautiful, 💓<br/><br/>
+      that I cannot stop my feelings for you !!
+      Thank you for accepting your mistake. 🌹
+    </p>
+    <button class="btn-agree" id="btnAgree">Agree 💖</button>
+  </div>
+</div>
+
+<script>
+  /* ── 1. Floating hearts ── */
+  const HEARTS = ['💗','💓','💕','💞','🌸','✨','🌹','💝','🩷'];
+  const bg = document.getElementById('heartBg');
+  for (let i = 0; i < 28; i++) {
+    const s = document.createElement('span');
+    s.textContent = HEARTS[Math.floor(Math.random() * HEARTS.length)];
+    s.style.left       = Math.random() * 100 + 'vw';
+    s.style.fontSize   = (10 + Math.random() * 22) + 'px';
+    s.style.animationDuration  = (6 + Math.random() * 12) + 's';
+    s.style.animationDelay     = (Math.random() * 10) + 's';
+    bg.appendChild(s);
+  }
+
+  /* ── 2. Runaway "No" button ── */
+  const btnNo = document.getElementById('btnNo');
+  const MARGIN = 16;
+
+  // Initial position: bottom-right of viewport
+  function placeNoButton() {
+    const r = btnNo.getBoundingClientRect();
+    btnNo.style.left = (window.innerWidth  - r.width  - 60) + 'px';
+    btnNo.style.top  = (window.innerHeight - r.height - 60) + 'px';
+  }
+  placeNoButton();
+  window.addEventListener('resize', placeNoButton);
+
+  function flee(cursorX, cursorY) {
+    const r   = btnNo.getBoundingClientRect();
+    const bx  = r.left + r.width  / 2;
+    const by  = r.top  + r.height / 2;
+
+    // Direction away from cursor
+    let dx = bx - cursorX;
+    let dy = by - cursorY;
+    const dist = Math.sqrt(dx * dx + dy * dy) || 1;
+    dx /= dist; dy /= dist;
+
+    const STEP = Math.max(160, 320 - dist * 0.8);
+    let nx = r.left + dx * STEP;
+    let ny = r.top  + dy * STEP;
+
+    // Clamp inside viewport
+    nx = Math.max(MARGIN, Math.min(window.innerWidth  - r.width  - MARGIN, nx));
+    ny = Math.max(MARGIN, Math.min(window.innerHeight - r.height - MARGIN, ny));
+
+    // If we're near an edge, pick a random safe spot
+    const edgeX = nx <= MARGIN + 2 || nx >= window.innerWidth  - r.width  - MARGIN - 2;
+    const edgeY = ny <= MARGIN + 2 || ny >= window.innerHeight - r.height - MARGIN - 2;
+    if (edgeX && edgeY) {
+      nx = MARGIN + Math.random() * (window.innerWidth  - r.width  - MARGIN * 2);
+      ny = MARGIN + Math.random() * (window.innerHeight - r.height - MARGIN * 2);
+    }
+
+    btnNo.style.left = nx + 'px';
+    btnNo.style.top  = ny + 'px';
+  }
+
+  // Mouse hover
+  btnNo.addEventListener('mousemove', e => flee(e.clientX, e.clientY));
+  btnNo.addEventListener('mouseenter', e => flee(e.clientX, e.clientY));
+
+  // Touch (mobile)
+  btnNo.addEventListener('touchstart', e => {
+    e.preventDefault();
+    const t = e.touches[0];
+    flee(t.clientX, t.clientY);
+  }, { passive: false });
+
+  // Clicking somehow (failsafe) — just flee again
+  btnNo.addEventListener('click', e => {
+    e.preventDefault();
+    flee(e.clientX + Math.random() * 40 - 20, e.clientY + Math.random() * 40 - 20);
+  });
+
+  /* ── 3. Yes → popup ── */
+  const overlay  = document.getElementById('overlay');
+  const btnYes   = document.getElementById('btnYes');
+  const btnAgree = document.getElementById('btnAgree');
+
+  btnYes.addEventListener('click', () => {
+    overlay.classList.add('show');
+  });
+
+  btnAgree.addEventListener('click', () => {
+    overlay.classList.remove('show');
+  });
+
+  overlay.addEventListener('click', e => {
+    if (e.target === overlay) overlay.classList.remove('show');
+  });
+</script>
+</body>
+</html>
