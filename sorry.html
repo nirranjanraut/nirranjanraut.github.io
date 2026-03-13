@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Hema 💕</title>
+  <title>💕</title>
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Lato:wght@300;400;700&display=swap" rel="stylesheet"/>
   <style>
     :root {
@@ -271,41 +271,12 @@
 <!-- Main card -->
 <div class="card">
   <span class="card-icon">❤️‍🩹</span>
-  <p class="card-eyebrow">I'm really very sorry</p>
-  <h1 class="card-title">Would you <em>forgive me?</em></h1>
-  <p class="card-sub" style="display:none;">Choose wisely… the heart knows its answer 🌹</p>
-
-  <div class="btn-row" id="btnRow">
-    <button class="btn btn-no" id="btnNo">Yes, I will 🙈</button>
-    <button class="btn btn-yes" id="btnYes">It was my mistake ! 💕</button>
-  </div>
-
-  <div class="divider">or</div>
-
-  <p class="hint" id="noHint">Choose what you feel 😏</p>
-</div>
-
-<!-- Shy "No" button – rendered outside card, positioned freely -->
-
-
-<!-- Popup overlay -->
-<div class="overlay" id="overlay">
-  <div class="popup">
-    <span class="popup-confetti">🎉✨🎊</span>
-    <span class="popup-icon">🥰</span>
-    <h2 class="popup-title">Yes! I knew it!</h2>
-    <p class="popup-body">
-      You look so beautiful, 💓<br/><br/>
-      that I cannot stop my feelings for you !!
-      Thank you for accepting your mistake. 🌹
-    </p>
-    <button class="btn-agree" id="btnAgree">Agree 💖</button>
-  </div>
 </div>
 
 <script>
   /* ── 1. Floating hearts ── */
-  const HEARTS = ['💗','💓','💕','💞','🌸','✨','🌹','💝','🩷'];
+  //const HEARTS = ['💗','💓','💕','💞','🌸','✨','🌹','💝','🩷'];
+  const HEARTS = ['🫴🏻','🚘','☕️','😰','🥺','🤕','😢','💔','❤️‍🩹'];
   const bg = document.getElementById('heartBg');
   for (let i = 0; i < 28; i++) {
     const s = document.createElement('span');
@@ -316,88 +287,6 @@
     s.style.animationDelay     = (Math.random() * 10) + 's';
     bg.appendChild(s);
   }
-
-  /* ── 2. Runaway "No" button ── */
-  const btnNo = document.getElementById('btnNo');
-  const MARGIN = 16;
-
-  // Initial position: bottom-right of viewport
-  function placeNoButton() {
-    const r = btnNo.getBoundingClientRect();
-    btnNo.style.left = (window.innerWidth  - r.width  - 60) + 'px';
-    btnNo.style.top  = (window.innerHeight - r.height - 60) + 'px';
-  }
-  //placeNoButton();
-  window.addEventListener('resize', placeNoButton);
-
-  function flee(cursorX, cursorY) {
-    const r   = btnNo.getBoundingClientRect();
-    const bx  = r.left + r.width  / 2;
-    const by  = r.top  + r.height / 2;
-
-    // Direction away from cursor
-    let dx = bx - cursorX;
-    let dy = by - cursorY;
-    const dist = Math.sqrt(dx * dx + dy * dy) || 1;
-    dx /= dist; dy /= dist;
-
-    const STEP = Math.max(160, 320 - dist * 0.8);
-    let nx = r.left + dx * STEP;
-    let ny = r.top  + dy * STEP;
-
-    // Clamp inside viewport
-    nx = Math.max(MARGIN, Math.min(window.innerWidth  - r.width  - MARGIN, nx));
-    ny = Math.max(MARGIN, Math.min(window.innerHeight - r.height - MARGIN, ny));
-
-    // If we're near an edge, pick a random safe spot
-    const edgeX = nx <= MARGIN + 2 || nx >= window.innerWidth  - r.width  - MARGIN - 2;
-    const edgeY = ny <= MARGIN + 2 || ny >= window.innerHeight - r.height - MARGIN - 2;
-    if (edgeX && edgeY) {
-      nx = MARGIN + Math.random() * (window.innerWidth  - r.width  - MARGIN * 2);
-      ny = MARGIN + Math.random() * (window.innerHeight - r.height - MARGIN * 2);
-    }
-
-    btnNo.style.left = nx + 'px';
-    btnNo.style.top  = ny + 'px';
-  }
-
-  // Mouse hover
-  btnNo.addEventListener('mousemove', e => flee(e.clientX, e.clientY));
-  btnNo.addEventListener('mouseenter', e => flee(e.clientX, e.clientY));
-
-  // Touch (mobile)
-  btnNo.addEventListener('touchstart', e => {
-    e.preventDefault();
-    const t = e.touches[0];
-    flee(t.clientX, t.clientY);
-  }, { passive: false });
-
-  // Clicking somehow (failsafe) — just flee again
-  btnNo.addEventListener('click', e => {
-    e.preventDefault();
-    flee(e.clientX + Math.random() * 40 - 20, e.clientY + Math.random() * 40 - 20);
-  });
-
-  /* ── 3. Yes → popup ── */
-  const overlay  = document.getElementById('overlay');
-  const btnYes   = document.getElementById('btnYes');
-  const btnAgree = document.getElementById('btnAgree');
-
-  btnYes.addEventListener('click', () => {
-    overlay.classList.add('show');
-  });
-
-  btnAgree.addEventListener('click', () => {
-    overlay.classList.remove('show');
-  });
-
-  overlay.addEventListener('click', e => {
-    if (e.target === overlay) overlay.classList.remove('show');
-  });
-  window.addEventListener('load', () => {
-    const btnNo = document.getElementById('btnNo');
-    btnNo.style.position = 'fixed';
-  });
 </script>
 </body>
 </html>
